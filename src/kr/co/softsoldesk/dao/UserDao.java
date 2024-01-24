@@ -20,4 +20,9 @@ public class UserDao {
 		
 		userMapper.addUserInfo(joinUserBean);
 	} //로직 서비스로 보냄
+	
+	//mapper에서 dao로
+	public UserBean getLoginUserInfo(UserBean tempLoginUserBean) {
+		return userMapper.getLoginUserInfo(tempLoginUserBean);
+	}
 }

@@ -1,5 +1,6 @@
 package kr.co.softsoldesk.controller;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,31 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Resource(name="loginUserBean")
+	private UserBean loginUserBean;
 
-	@GetMapping("/login")
-	public String login() {
+	@GetMapping("/login") //값 입력 받은거 받아서 login_pro로 보내기 위해 @ModelAttribute 사용
+	public String login(@ModelAttribute("tempLoginUserBean") UserBean tempLoginUserBean) {
 		return "user/login";
+	}
+	
+	@PostMapping("/login_pro")    //검증 위해 사용                                                                                      
+	public String login_pro(@Valid @ModelAttribute("tempLoginUserBean") UserBean tempLoginUserBean, BindingResult result) {
+		
+		if(result.hasErrors()) { //로그인 실패
+			return "user/login";
+		}
+		
+		userService.getLoginUserInfo(tempLoginUserBean); //db에 값이 있으면 해당 함수 수행
+		
+		if(loginUserBean.isUserLogin() == true) {
+			return "user/login_success"; 
+		}else {
+			return "user/login_fail";
+		}
+		
+		
 	}
 	
 	@GetMapping("/join")
