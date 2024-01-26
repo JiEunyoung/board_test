@@ -2,6 +2,7 @@ package kr.co.softsoldesk.config;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterRegistration;
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
@@ -50,6 +51,10 @@ public class SpringConfigClass implements WebApplicationInitializer {
 		
 		filter.addMappingForServletNames(null, false, "dispatcher");
 		//dispatcher에 의해 추가된 Servlet에서 UTF-8로 인코딩
+		
+		MultipartConfigElement multipartConfigElement = new MultipartConfigElement(null, 52428800, 52428800, 0);
+		
+		servlet.setMultipartConfig(multipartConfigElement);
 	
 	}
 	

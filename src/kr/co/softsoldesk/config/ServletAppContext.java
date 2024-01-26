@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.interceptor.CheckLoginInterceptor;
 import kr.co.softsoldesk.interceptor.TopMenuInterceptor;
+import kr.co.softsoldesk.mapper.BoardMapper;
 import kr.co.softsoldesk.mapper.TopMenuMapper;
 import kr.co.softsoldesk.mapper.UserMapper;
 import kr.co.softsoldesk.service.TopMenuService;
@@ -107,6 +109,14 @@ public class ServletAppContext implements WebMvcConfigurer{
 		
 		return factoryBean;
 	}
+	
+	@Bean // 다른 Mapper <> 이 부분만 바꿔서 생성해주면 됨
+	public MapperFactoryBean<BoardMapper> getBoardMapper(SqlSessionFactory factory) throws Exception{
+		MapperFactoryBean<BoardMapper> factoryBean = new MapperFactoryBean<BoardMapper>(BoardMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		
+		return factoryBean;
+	}
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
@@ -135,5 +145,11 @@ public class ServletAppContext implements WebMvcConfigurer{
 		ReloadableResourceBundleMessageSource res = new ReloadableResourceBundleMessageSource();
 		res.setBasename("/WEB-INF/properties/error_message");
 		return res;
+	}
+	
+	@Bean //파일 처리 위한 빈 등록
+	public StandardServletMultipartResolver multipartResolver() {
+		
+		return new StandardServletMultipartResolver();
 	}
 }
