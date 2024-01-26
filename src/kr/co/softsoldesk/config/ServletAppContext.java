@@ -1,5 +1,7 @@
 package kr.co.softsoldesk.config;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -20,6 +22,8 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import kr.co.softsoldesk.beans.UserBean;
+import kr.co.softsoldesk.interceptor.CheckLoginInterceptor;
 import kr.co.softsoldesk.interceptor.TopMenuInterceptor;
 import kr.co.softsoldesk.mapper.TopMenuMapper;
 import kr.co.softsoldesk.mapper.UserMapper;
@@ -49,6 +53,9 @@ public class ServletAppContext implements WebMvcConfigurer{
 	   
 	   @Autowired
 	   private TopMenuService topMenuService;
+	   
+	   @Resource(name = "loginUserBean")
+	   private UserBean loginUserBean;
 	
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -103,10 +110,17 @@ public class ServletAppContext implements WebMvcConfigurer{
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		TopMenuInterceptor topMenuInterceptor = new TopMenuInterceptor(topMenuService);
+		TopMenuInterceptor topMenuInterceptor = new TopMenuInterceptor(topMenuService, loginUserBean);
+		CheckLoginInterceptor checkLoginInterceptor = new CheckLoginInterceptor(loginUserBean);
+		
 		InterceptorRegistration reg1 = registry.addInterceptor(topMenuInterceptor);
+		InterceptorRegistration reg2 = registry.addInterceptor(checkLoginInterceptor);
 		
 		reg1.addPathPatterns("/**"); //모든 요청에서 동작
+		reg2.addPathPatterns("/user/modify", "/user/logout", "/board/*");
+		//수정 페이지, 로그아웃 페이지, 게시판 폴더의 페이지에 요청 시 인터셉터 / board에서 main은 예외
+		reg2.excludePathPatterns("/board/main");
+		//board에서 main은 예외
 	}
 	
 	//메시자와의 충돌방지, 프로퍼티 파일과 메시지를 구분하여 별도로 관리

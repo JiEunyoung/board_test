@@ -25,11 +25,16 @@
       <div class="col-sm-6">
          <div class="card shadow">
             <div class="card-body">
-               <div class="alert alert-danger">
-                  <h3>로그인 실패</h3>
-                  <p>아이디 비밀번호를 확인해주세요</p>
-               </div>
+               
+               <c:if test="${fail == true }">
+                   <div class="alert alert-danger">
+                       <h3>로그인 실패</h3>
+                       <p>아이디 비밀번호를 확인해주세요</p>
+                   </div>
+               </c:if>
+                                     
                <form:form action="${root }/user/login_pro" method="post" modelAttribute="tempLoginUserBean">
+               						<!-- 여기로 요청 -->
                   <div class="form-group">
                      <form:label path="user_id">아이디</form:label>
                      <form:input path="user_id" class="form-control"/>
@@ -37,7 +42,7 @@
                   </div>
                   <div class="form-group">
                      <form:label path="user_pw">비밀번호</form:label>
-                     <form:input path="user_pw" class="form-control"/>
+                     <form:password path="user_pw" class="form-control"/>
                      <form:errors path="user_pw" style="color:red"/>
                   </div>
                   <div class="form-group text-right">
