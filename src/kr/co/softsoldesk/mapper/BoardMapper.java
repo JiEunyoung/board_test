@@ -34,7 +34,8 @@ public interface BoardMapper {
 	List<ContentBean> getContentList(int board_info_idx);
 	
 	@Select("SELECT a1.user_name AS content_writer_name, TO_CHAR(a2.content_date, 'yyyy-mm-dd') AS content_date,"
-			+ "a2.content_subject, a2.content_text, a2.content_file "
+			+ "a2.content_subject, a2.content_text, a2.content_file, "
+			+ "a2.content_writer_idx "
 			+ "FROM user_table a1, content_table a2 "
 			+ "WHERE a1.user_idx = a2.content_writer_idx "
 			+ "AND content_idx = #{content_idx}")
