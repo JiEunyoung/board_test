@@ -18,7 +18,16 @@ public class ContentBean {
     private int content_board_idx;
     private String content_date;
     
-    private MultipartFile upload_file; //브라우저가 보낸 파일 데이터
+    private String content_writer_name;
+    
+    
+	public String getContent_writer_name() {
+		return content_writer_name;
+	}
+	public void setContent_writer_name(String content_writer_name) {
+		this.content_writer_name = content_writer_name;
+	}
+	private MultipartFile upload_file; //브라우저가 보낸 파일 데이터
     
 	public MultipartFile getUpload_file() {
 		return upload_file;

@@ -1,6 +1,7 @@
 package kr.co.softsoldesk.service;
 
 import java.io.File;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -36,6 +37,8 @@ public class BoardService {
 		FilenameUtils.getBaseName(upload_file.getOriginalFilename()) + "." +    //파일 이름
 		FilenameUtils.getExtension(upload_file.getOriginalFilename());          //확장자
 		
+		
+		
 		try {
 			upload_file.transferTo(new File(path_upload + "/" + file_name));
 		} catch (Exception e) {
@@ -62,6 +65,18 @@ public class BoardService {
 		writeContentBean.setContent_writer_idx(loginUserBean.getUser_idx());
 		boardDao.addContentInfo(writeContentBean);
 		
+	}
+	
+	public String getBoardInfoName(int board_info_idx) {
+		return boardDao.getBoardInfoName(board_info_idx);
+	}
+	
+	public List<ContentBean> getContentList(int board_info_idx){
+		return boardDao.getContentList(board_info_idx);
+	}
+	
+	public ContentBean getContentInfo(int content_idx) {
+		return boardDao.getContentInfo(content_idx);
 	}
 	 
 }

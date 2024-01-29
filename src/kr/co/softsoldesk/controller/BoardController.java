@@ -1,5 +1,7 @@
 package kr.co.softsoldesk.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +27,24 @@ public class BoardController {
 	@GetMapping("/main") // /board/main
 	public String main(@RequestParam("board_info_idx") int board_info_idx, Model model) {
 		model.addAttribute("board_info_idx", board_info_idx);
+		
+		String boardInfoName = boardService.getBoardInfoName(board_info_idx);
+		model.addAttribute("boardInfoName", boardInfoName);
+		
+		List<ContentBean> contentList = boardService.getContentList(board_info_idx);
+		model.addAttribute("contentList", contentList);
+		
 		return "board/main";
 	}
 	
-	@GetMapping("/read") 
-	public String read() {
+	@GetMapping("/read") //하나의 객체로 담아 보낼 때 Model 사용
+	public String read(@RequestParam("board_info_idx") int board_info_idx,
+					   @RequestParam("content_idx") int content_idx, Model model) {
+		model.addAttribute("board_info_idx", board_info_idx);
+		
+		ContentBean readContentBean = boardService.getContentInfo(content_idx);
+		model.addAttribute("readContentBean", readContentBean);   //read.jsp로 보냄
+		
 		return "board/read";
 	}
 	
