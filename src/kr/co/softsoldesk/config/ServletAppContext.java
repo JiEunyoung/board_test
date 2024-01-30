@@ -25,10 +25,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.interceptor.CheckLoginInterceptor;
+import kr.co.softsoldesk.interceptor.CheckWriterInterceptor;
 import kr.co.softsoldesk.interceptor.TopMenuInterceptor;
 import kr.co.softsoldesk.mapper.BoardMapper;
 import kr.co.softsoldesk.mapper.TopMenuMapper;
 import kr.co.softsoldesk.mapper.UserMapper;
+import kr.co.softsoldesk.service.BoardService;
 import kr.co.softsoldesk.service.TopMenuService;
 
 
@@ -58,6 +60,9 @@ public class ServletAppContext implements WebMvcConfigurer{
 	   
 	   @Resource(name = "loginUserBean")
 	   private UserBean loginUserBean;
+	   
+	   @Autowired
+	   private BoardService boardService;
 	
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -131,6 +136,12 @@ public class ServletAppContext implements WebMvcConfigurer{
 		//수정 페이지, 로그아웃 페이지, 게시판 폴더의 페이지에 요청 시 인터셉터 / board에서 main은 예외
 		reg2.excludePathPatterns("/board/main");
 		//board에서 main은 예외
+		
+		CheckWriterInterceptor checkWriterInterceptor = new CheckWriterInterceptor(loginUserBean, boardService);
+		
+		InterceptorRegistration reg3 = registry.addInterceptor(checkWriterInterceptor);
+		reg3.addPathPatterns("/board/modify", "/board/delete");
+		//수정, 삭제 페이지 접근 시 인터셉터
 	}
 	
 	//메시자와의 충돌방지, 프로퍼티 파일과 메시지를 구분하여 별도로 관리

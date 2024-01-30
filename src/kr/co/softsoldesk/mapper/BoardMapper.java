@@ -2,9 +2,11 @@ package kr.co.softsoldesk.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.Update;
 
 import kr.co.softsoldesk.beans.ContentBean;
 
@@ -40,5 +42,13 @@ public interface BoardMapper {
 			+ "WHERE a1.user_idx = a2.content_writer_idx "
 			+ "AND content_idx = #{content_idx}")
 	ContentBean getContentInfo(int content_idx);
+	
+	@Update("update content_table "
+			+ "set content_subject = #{content_subject}, content_text = #{content_text}, content_file = #{content_file, jdbcType=VARCHAR} "
+			+ "where content_idx = #{content_idx}")
+	void modifyContentInfo(ContentBean modifyContentBean);
+	
+	@Delete("delete from content_table where content_idx = #{content_idx}")
+	void deleteContentInfo(int content_idx);
 	
 }
