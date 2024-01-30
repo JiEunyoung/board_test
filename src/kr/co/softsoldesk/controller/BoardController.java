@@ -30,13 +30,14 @@ public class BoardController {
 	private UserBean loginUserBean;
 	
 	@GetMapping("/main") // /board/main
-	public String main(@RequestParam("board_info_idx") int board_info_idx, Model model) {
+	public String main(@RequestParam("board_info_idx") int board_info_idx, Model model,
+					   @RequestParam(value = "page", defaultValue = "1") int page) { //1페이지부터 나오도록 세팅
 		model.addAttribute("board_info_idx", board_info_idx);
 		
 		String boardInfoName = boardService.getBoardInfoName(board_info_idx);
 		model.addAttribute("boardInfoName", boardInfoName);
 		
-		List<ContentBean> contentList = boardService.getContentList(board_info_idx);
+		List<ContentBean> contentList = boardService.getContentList(board_info_idx, page);
 		model.addAttribute("contentList", contentList);
 		
 		return "board/main";

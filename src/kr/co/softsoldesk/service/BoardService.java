@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.ibatis.reflection.SystemMetaObject;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -30,6 +31,12 @@ public class BoardService {
 	
 	@Value("${path.upload}")
 	private String path_upload;
+	
+	@Value("${page.listcnt}")
+	private int page_listcnt;
+	
+	@Value("${page.paginationcnt}")
+	private int page_paginationcnt;
 	
 	public String saveUploadFile(MultipartFile upload_file) {
 		
@@ -71,8 +78,14 @@ public class BoardService {
 		return boardDao.getBoardInfoName(board_info_idx);
 	}
 	
-	public List<ContentBean> getContentList(int board_info_idx){
-		return boardDao.getContentList(board_info_idx);
+	public List<ContentBean> getContentList(int board_info_idx, int page){
+		int start = (page -1)*page_listcnt; //1페이지는 (인덱스0~9번까지), 2페이지는 (인덱스 10~19까지)
+		//게시판 메인에서 조회되는 첫번째 게시글의 인덱스
+		//1페이지일 때, 0번 인덱스부터 글이 시작(0~9)
+		//2페이지일 때, 10번 인덱스부터 글이 시작(10~19)
+		
+		RowBounds rowBounds = new RowBounds(start, page_listcnt); //start부터 page_list개 
+		return boardDao.getContentList(board_info_idx, rowBounds);
 	}
 	
 	public ContentBean getContentInfo(int content_idx) {

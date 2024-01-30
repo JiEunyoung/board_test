@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.session.RowBounds;
 
 import kr.co.softsoldesk.beans.ContentBean;
 
@@ -33,7 +34,8 @@ public interface BoardMapper {
 			+ " FROM content_table a1, user_table a2"
 			+ " WHERE a1.content_writer_idx = a2.user_idx AND a1.content_board_idx = #{board_info_idx}"
 			+ " ORDER BY a1.content_idx DESC")
-	List<ContentBean> getContentList(int board_info_idx);
+	List<ContentBean> getContentList(int board_info_idx, RowBounds rowBounds);
+	                                                     //페이징 처리에 사용하는 클래스(option.properties에서 보이는 페이지 개수 결정)
 	
 	@Select("SELECT a1.user_name AS content_writer_name, TO_CHAR(a2.content_date, 'yyyy-mm-dd') AS content_date,"
 			+ "a2.content_subject, a2.content_text, a2.content_file, "
