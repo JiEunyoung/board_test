@@ -12,19 +12,6 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navMenu">
 			<ul class="navbar-nav">
-				<%-- <li class="nav-item">
-					<a href="${root }/board/main" class="nav-link">자유게시판</a>
-					<!-- root 경로에서 보낸 것 처럼 root를 기준으로 둠(자유게시판 누른 후 이동한 페이지에서 자유게시판 눌렀을 경우 /board/board/main 방지 -->
-				</li>
-				<li class="nav-item">
-					<a href="${root }/board/main" class="nav-link">유머게시판</a>
-				</li>
-				<li class="nav-item">
-					<a href="${root }/board/main" class="nav-link">정치게시판</a>
-				</li>
-				<li class="nav-item">
-					<a href="${root }/board/main" class="nav-link">스포츠게시판</a>
-				</li> --%>
 				
 				<c:forEach var='obj' items="${topMenuList }">
 					<li class="nav-item">

@@ -60,32 +60,3 @@ public class SpringConfigClass implements WebApplicationInitializer {
 	
 
 }
-
-
-/*
-public class SpringConfigClass extends AbstractAnnotationConfigDispatcherServletInitializer{
-
-	@Override
-	protected Class<?>[] getRootConfigClasses() {
-		return new Class[] { RootAppContext.class };
-	}//프로젝트에서 사용할 Bean들을 정의하기 위한 클래스 지정
-
-	@Override
-	protected Class<?>[] getServletConfigClasses() {
-		return new Class[] { ServletAppContext.class };
-	}//Spring MVC 프로젝트 설정을 위한 클래스 지정
-
-	@Override
-	protected String[] getServletMappings() {
-		return new String[] {"/"};
-	}//DispatcherServlet에 매핑할 요청 주소를 세팅
-
-	@Override
-	protected Filter[] getServletFilters() {
-		CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
-		encodingFilter.setEncoding("UTF-8");
-		return new Filter[] { encodingFilter };
-	} //파라미터 인코딩 필터 설정
-	
-}
-*/
