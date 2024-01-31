@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.softsoldesk.beans.ContentBean;
+import kr.co.softsoldesk.beans.PageBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.service.BoardService;
 
@@ -39,6 +40,10 @@ public class BoardController {
 		
 		List<ContentBean> contentList = boardService.getContentList(board_info_idx, page);
 		model.addAttribute("contentList", contentList);
+		
+		PageBean pageBean = boardService.getContent(board_info_idx, page);
+		model.addAttribute("pageBean", pageBean); //model에 담아 jsp에 뿌림
+		//파라미터로 받은 현재 페이지와 게시판 번호를 매개변수로 현재 페이지에 대한 정보를 반환 후 board/main.jsp로 리턴
 		
 		return "board/main";
 	}

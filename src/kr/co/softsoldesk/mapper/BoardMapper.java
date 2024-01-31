@@ -53,4 +53,10 @@ public interface BoardMapper {
 	@Delete("delete from content_table where content_idx = #{content_idx}")
 	void deleteContentInfo(int content_idx);
 	
+	//해당 게시판의 전체 글 수 가져오기
+	@Select("select count(*) "
+			+ "from content_table "
+			+ "where content_board_idx = #{content_board_idx}")
+	int getContentCnt(int content_board_idx);
+	//매개변수로 해당 게시판 번호가 필요(각 게시판별 게시글의 수)
 }

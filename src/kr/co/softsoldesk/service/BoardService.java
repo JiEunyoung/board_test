@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.softsoldesk.beans.ContentBean;
+import kr.co.softsoldesk.beans.PageBean;
 import kr.co.softsoldesk.beans.UserBean;
 import kr.co.softsoldesk.dao.BoardDAO;
 
@@ -104,5 +105,14 @@ public class BoardService {
 	public void deleteContentInfo(int content_idx) {
 		
 		boardDao.deleteContentInfo(content_idx);
+	}
+	
+	public PageBean getContent(int content_board_idx, int currentPage) {
+		int content_Cnt = boardDao.getContentCnt(content_board_idx);
+		//해당 게시판의 전체 게시글의 수
+		PageBean pageBean = new PageBean(content_Cnt, currentPage, page_listcnt, page_paginationcnt);
+		//전체 게시글/현제 페이지/페이지 재현(10개)/화면에 보여지는 버튼의 최대수(10개)를 매개변수로 하는 PageBean 객첵를 생성해 리턴
+		
+		return pageBean;
 	}
 }
